@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login form</title>
+  <style>
+    form {
+      font-family: 'Courier New', Courier, monospace;
+      color: #3f4952;
+      width: 350px;
+      border-radius: 10px;
+      box-sizing: border-box;
+      padding: 20px;
+      display: grid;
+      box-shadow: 0 0 25px -10px black;
+      margin: 50px auto 10px;
+      position: relative;
+    }
+
+    label {
+      display: grid;
+      grid-template-columns: 110px auto;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    input {
+      border: 1px solid #9db2c5;
+      border-radius: 10px;
+      padding: 6px;
+      box-sizing: border-box;
+    }
+
+    input:hover {
+      background-color: rgb(245, 245, 245);
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 5px -1px inset gray;
+    }
+
+    button {
+      width: 100px;
+      margin-left: auto;
+      background-color: #fff;
+      border: 1px solid #9db2c5;
+      padding: 6px 10px;
+
+      text-transform: uppercase;
+      color: #3f4952;
+      border-radius: 10px;
+    }
+
+    button:hover,
+    button:focus {
+      outline: none;
+      box-shadow: 0 0 10px -2px gray;
+      transform: scale(1.01)
+    }
+
+
+    button:active {
+      outline: none;
+      box-shadow: 0 0 2px 0 gray;
+      transform: scale(0.99)
+    }
+
+    .error {
+      position: absolute;
+      background-color: crimson;
+      color: white;
+      text-transform: uppercase;
+      font-weight: bold;
+      bottom: 10px;
+      left: 20px;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 10px;
+      line-height: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <form>
+    <label><span>User name: </span><input type="text" name="username" minlength="2" maxlength="20" placeholder="John"
+        required></label>
+    <label><span>User email: </span><input type="email" name="useremail" placeholder="example@email.com"
+        required></label>
+    <label><span>Password: </span><input type="password" name="password"
+        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" required></label>
+    <button type="submit" name="submitBtn">Login</button>
+  </form>
+
+  <script>
+    const form = document.querySelector('form');
+    const username = form.elements.username;
+    const btn = form.elements.submitBtn;
+
+    const removeError = () => {
+      const error = form.querySelector('.error');
+      error && error.remove();
+    }
+
+    username.addEventListener('input', removeError)
+
+    btn.addEventListener('click', (evt) => {
+      removeError();
+
+      const { valueMissing, tooShort } = username.validity;
+      let isError = false;
+      let message = '';
+
+      if (valueMissing) {
+        message = 'Please input username!';
+        isError = true;
+      } else if (tooShort) {
+        message = 'User name too short!';
+        isError = true;
+      }
+
+      if (isError) {
+        evt.preventDefault();
+        form.insertAdjacentHTML('beforeend', `<p class="error">${message}</p>`);
+      }
+    })
+  </script>
+</body>
+
+</html>
